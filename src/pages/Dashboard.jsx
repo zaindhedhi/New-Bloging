@@ -19,7 +19,7 @@ const Dashboard = () => {
    const getDataFromFireStoreBlog = async() =>{
 
    try{
-   const q = query(collection(db, "allblogs"), where("uid", "==", auth.currentUser.uid) , orderBy('postingTime'));
+   const q = query(collection(db, "allblogs"), where("uid", "==", auth.currentUser.uid) , orderBy('postingTime' , 'desc'));
 
  const querySnapshot = await getDocs(q);
  querySnapshot.forEach((doc) => {
@@ -128,7 +128,7 @@ const postBlog = async(event) => {
     setBlogData([...blogData])
     title.current.value = ''
     blog.current.value = ''
-    setError(false)
+    // setError(false)
 
 } catch (e) {
   console.error("Error adding document: ", e);
@@ -196,7 +196,7 @@ const deleteBlog = async (item , index) => {
 <h1 className='mt-10 max-w-[881px] mx-auto font-bold text-2xl'>My Blogs</h1>
 
 <div className='mt-10 max-w-[881px] mx-auto border-4 border-fuchsia-500 p-4 sm:p-6 rounded-md shadow-lg bg-white'>
-{error && <h1 className='text-center mt-5'>Add Blogs!</h1>}
+{/* {error && <h1 className='text-center mt-5'>Add Blogs!</h1>} */}
 
 
 {blogData.length > 0 ? blogData.map((item, index) => {
@@ -210,10 +210,10 @@ const deleteBlog = async (item , index) => {
 
                
 
-             <div className='flex flex-col justify-start items-start w-[80%]'>
+             <div className='flex flex-col justify-start items-start w-[80%] mt-5'>
              <p className='font-bold text-2xl w-full break-words'>{item.title}</p>
              <p className='text-sm text-[#747779] font-bold'>{userObj.fullName} - {item.postingDay}</p>
-             <p className='break-words text-[#7f868d]'>{item.blog}</p><br  />
+             <p className='break-words text-[#7f868d] mt-5'>{item.blog}</p><br  />
 
 
              <div className=''>
@@ -249,7 +249,7 @@ const deleteBlog = async (item , index) => {
         </div>
       </dialog>
           </div>
-        }): <h1>No Data Found</h1> }
+        }): <h1 className='font-bold text-center'>Add Blogs!</h1> }
 </div>
     
     
