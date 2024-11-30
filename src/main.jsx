@@ -7,7 +7,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import ProtectedRoutes from './components/ProtectedRoutes.jsx'
 import Dashboard from './pages/Dashboard.jsx'
-import User from './pages/User.jsx'
+import SingleUser from './pages/SingleUser.jsx'
 import Profile from './pages/Profile.jsx'
 
 // Routing Setup
@@ -38,8 +38,8 @@ const router = createBrowserRouter([
         element: <ProtectedRoutes component={<Profile/>}/>
       },
       {
-        path: 'user/:id',
-        element: <ProtectedRoutes component={<User/>}/>
+        path: '/user/:id',
+        element: <ProtectedRoutes component={<SingleUser/>}/>
       }
     ]
   }
