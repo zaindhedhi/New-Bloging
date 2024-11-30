@@ -30,6 +30,7 @@ const Dashboard = () => {
 
   })
  setBlogData([...blogData])
+
 });
 
 
@@ -217,7 +218,7 @@ const deleteBlog = async (item , index) => {
 
 
              <div className=''>
-              <button className=" m-5 px-10 btn btn-success" onClick={()=>editBlog(item , index)}>Edit</button>
+              <button className=" m-5 px-10 btn btn-success" onClick={()=>document.getElementById('my_modal_3').showModal()}>Edit</button>
               <button className=" px-10 btn btn-error" onClick={() => {
 
              
@@ -248,7 +249,41 @@ const deleteBlog = async (item , index) => {
           </div>
         </div>
       </dialog>
+      <dialog id="my_modal_3" className="modal">
+   <div className="modal-box">
+     <form method="dialog">
+       {/* if there is a button in form, it will close the modal */}
+       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+     </form>
+     <h3 className="font-bold text-lg mb-5">Update Blog!</h3>
+     
+     <form>
+
+     <label className="form-control w-full max-w-xs">
+     <div className="label">
+    <span className="font-bold">Title</span>
+    </div>
+   <input ref={title} type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+   <div className="label">
+   </div>
+   </label>
+
+   <label className="form-control">
+  <div className="label">
+    <span className="font-bold">Blog</span>
+  </div>
+  <textarea ref={blog} className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
+  <div className="label">
+  </div>
+</label>
+<button type='submit' className='btn btn-primary w-full mt-3'>Update</button>
+
+     </form>
+   </div>
+ </dialog>
           </div>
+
+          
         }): <h1 className='font-bold text-center'>Add Blogs!</h1> }
 </div>
     
@@ -261,3 +296,16 @@ const deleteBlog = async (item , index) => {
 }
 
 export default Dashboard
+
+// {/* You can open the modal using document.getElementById('ID').showModal() method */}
+// <button className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}>open modal</button>
+// <dialog id="my_modal_3" className="modal">
+//   <div className="modal-box">
+//     <form method="dialog">
+//       {/* if there is a button in form, it will close the modal */}
+//       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+//     </form>
+//     <h3 className="font-bold text-lg">Hello!</h3>
+//     <p className="py-4">Press ESC key or click on ✕ button to close</p>
+//   </div>
+// </dialog>

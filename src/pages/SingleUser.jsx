@@ -15,7 +15,7 @@ const SingleUser = () => {
     const getDataFromFireStoreBlog = async() =>{
 
         try{
-        const q = query(collection(db, "allblogs"), where("uid", "==", auth.currentUser.uid) , orderBy('postingTime' , 'desc'));
+        const q = query(collection(db, "allblogs"), where("uid", "==", id) , orderBy('postingTime' , 'desc'));
      
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -41,7 +41,7 @@ const SingleUser = () => {
  
  useEffect(() => {
     const getDataFromFireStore = async() => {
-        const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+        const q = query(collection(db, "users"), where("uid", "==", id));
     
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {

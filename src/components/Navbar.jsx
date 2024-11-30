@@ -117,7 +117,7 @@ signOut(auth).then(() => {
       </li>
       
     </ul>
-  </div>): <li><Link to={'login'}>Login/Register</Link></li>}
+  </div>): <li><Link to={'login'} className='font-bold border-solid border-8 border-yellow-300 hover:bg-lime-300 p-2 bg-white'>Login/Register</Link></li>}
   
 </div>
     
