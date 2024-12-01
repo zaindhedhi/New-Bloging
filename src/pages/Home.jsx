@@ -70,7 +70,7 @@ const Home = () => {
     <h2 className='text-2xl text-center font-bold m-10'>All blogs</h2>
 
     {allBlogData.length > 0 ? allBlogData.map((item, index) => {
-    return <div className='flex w-[50%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] m-10 border border-black'>
+    return <div key={item.docid} className='flex w-[50%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] m-10 border border-black'>
 
     <div className=''>
 

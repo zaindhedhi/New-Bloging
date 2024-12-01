@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { collection, addDoc, Timestamp, getDocs, query, where, orderBy, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, Timestamp, getDocs, query, where, orderBy, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from '../config/Firebase/config';
 import userimage from '../assets/user.png'
+
+
 
 const Dashboard = () => {
 
@@ -14,6 +16,8 @@ const Dashboard = () => {
  
  const title = useRef()
  const blog = useRef()
+ const name = useRef()
+ const descr = useRef()
  
  useEffect(() => {
    const getDataFromFireStoreBlog = async() =>{
@@ -168,6 +172,27 @@ const deleteBlog = async (item , index) => {
   }
 }
 
+  //edit blog from database
+  const editBlog = async(item , index , event) =>{
+    console.log(item , index)
+    event.preventDefault()
+   
+   const washingtonRef = doc(db, "allblogs", item.docid);
+   try{
+    await updateDoc(washingtonRef, {
+   title: name.current.value,
+   blog: descr.current.value
+  });
+  blogData[index].title = name.current.value
+  blogData[index].blog = descr.current.value
+  setBlogData([...blogData])
+  name.current.value = ''
+   descr.current.value = ''
+}catch{
+  console.log('nhi ho raha hai')
+
+}
+  }  
 
 
 
@@ -218,7 +243,7 @@ const deleteBlog = async (item , index) => {
 
 
              <div className=''>
-              <button className=" m-5 px-10 btn btn-success" onClick={()=>document.getElementById('my_modal_3').showModal()}>Edit</button>
+              <button className=" m-5 px-10 btn btn-success" onClick={()=>document.getElementById('my_modal_3').showModal()}  >Edit</button>
               <button className=" px-10 btn btn-error" onClick={() => {
 
              
@@ -249,6 +274,8 @@ const deleteBlog = async (item , index) => {
           </div>
         </div>
       </dialog>
+
+
       <dialog id="my_modal_3" className="modal">
    <div className="modal-box">
      <form method="dialog">
@@ -263,7 +290,7 @@ const deleteBlog = async (item , index) => {
      <div className="label">
     <span className="font-bold">Title</span>
     </div>
-   <input ref={title} type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+   <input ref={name} type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
    <div className="label">
    </div>
    </label>
@@ -272,11 +299,11 @@ const deleteBlog = async (item , index) => {
   <div className="label">
     <span className="font-bold">Blog</span>
   </div>
-  <textarea ref={blog} className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
+  <textarea ref={descr} className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
   <div className="label">
   </div>
 </label>
-<button type='submit' className='btn btn-primary w-full mt-3'>Update</button>
+<button type='submit' onClick={()=>editBlog(item , index)}  className='btn btn-primary w-full mt-3 font-bold'>Update</button>
 
      </form>
    </div>
