@@ -174,22 +174,30 @@ const deleteBlog = async (item , index) => {
 
   //edit blog from database
   const editBlog = async(item , index , event) =>{
-    console.log(item , index)
-    event.preventDefault()
+    event.preventDefault();
+    
    
    const washingtonRef = doc(db, "allblogs", item.docid);
    try{
+    const updatedTitle = name.current.value;
+    const updatedBlog = descr.current.value;
+
+    console.log("Title:", updatedTitle);
+    console.log("Blog:", updatedBlog);
+    console.log(item.docid);
+
     await updateDoc(washingtonRef, {
-   title: name.current.value,
-   blog: descr.current.value
+   title: updatedTitle,
+   blog: updatedBlog
   });
-  blogData[index].title = name.current.value
-  blogData[index].blog = descr.current.value
+  blogData[index].title = updatedTitle
+  blogData[index].blog = updatedBlog
   setBlogData([...blogData])
+  document.getElementById('my_modal_3').close();
   name.current.value = ''
    descr.current.value = ''
-}catch{
-  console.log('nhi ho raha hai')
+}catch(error){
+  console.log(error + 'nhi ho raha hai')
 
 }
   }  
@@ -206,13 +214,13 @@ const deleteBlog = async (item , index) => {
   <div className='mt-10 max-w-[881px] mx-auto border-4 border-fuchsia-500 p-4 sm:p-6 rounded-md shadow-lg bg-white'>
   <form className='flex  flex-col gap-4 justify-center items-center'>
 
-<label className="form-control w-full max-w-xs">
+<label id='title' className="form-control w-full max-w-xs">
 <div className="label">
  <span className="label-text text-2xl">Blog Title?</span>
 </div>
-<input ref={title} type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+<input ref={title}  type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
 </label>
-<textarea className="textarea textarea-secondary w-[20rem]" placeholder="What is in Your Mind?" ref={blog}></textarea>
+<textarea id='blog' className="textarea textarea-secondary w-[20rem]" placeholder="What is in Your Mind?" ref={blog}></textarea>
 
 <button type='submit'onClick={postBlog} className=" btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">{loading ? <span className="loading loading-dots loading-lg"></span> : "Publish Blog!"}</button>
 </form>
@@ -284,26 +292,26 @@ const deleteBlog = async (item , index) => {
      </form>
      <h3 className="font-bold text-lg mb-5">Update Blog!</h3>
      
-     <form>
+     <form onSubmit={(event)=>editBlog(item , index, event)}>
 
-     <label className="form-control w-full max-w-xs">
+     <label id='name' className="form-control w-full max-w-xs">
      <div className="label">
     <span className="font-bold">Title</span>
     </div>
-   <input ref={name} type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+   <input ref={name}  type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
    <div className="label">
    </div>
    </label>
 
-   <label className="form-control">
+   <label  className="form-control">
   <div className="label">
     <span className="font-bold">Blog</span>
   </div>
-  <textarea ref={descr} className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
+  <textarea ref={descr} id='descr' className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
   <div className="label">
   </div>
 </label>
-<button type='submit' onClick={()=>editBlog(item , index)}  className='btn btn-primary w-full mt-3 font-bold'>Update</button>
+<button type='submit'  className='btn btn-primary w-full mt-3 font-bold'>Update</button>
 
      </form>
    </div>
