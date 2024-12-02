@@ -173,35 +173,51 @@ const deleteBlog = async (item , index) => {
 }
 
   //edit blog from database
-  const editBlog = async(item , index , event) =>{
-    event.preventDefault();
+  
+
+
+    const editFunc = (item , index) =>{
+      document.getElementById('my_modal_3').showModal()
+    
+    const editBlog = async(item , index, event) =>{
+     
+      event.preventDefault();
+     console.log(item.docid)
     
    
-   const washingtonRef = doc(db, "allblogs", item.docid);
-   try{
-    const updatedTitle = name.current.value;
-    const updatedBlog = descr.current.value;
-
-    console.log("Title:", updatedTitle);
-    console.log("Blog:", updatedBlog);
-    console.log(item.docid);
-
-    await updateDoc(washingtonRef, {
-   title: updatedTitle,
-   blog: updatedBlog
-  });
-  blogData[index].title = updatedTitle
-  blogData[index].blog = updatedBlog
-  setBlogData([...blogData])
-  document.getElementById('my_modal_3').close();
-  name.current.value = ''
+    const washingtonRef = doc(db, "allblogs", item.docid);
+    try{
+     const updatedTitle = name.current.value;
+     const updatedBlog = descr.current.value;
+ 
+     console.log("Title:", updatedTitle);
+     console.log("Blog:", updatedBlog);
+     console.log(item.docid);
+ 
+     await updateDoc(washingtonRef, {
+    title: updatedTitle,
+    blog: updatedBlog
+   });
+   blogData[index].title = updatedTitle
+   blogData[index].blog = updatedBlog
+   setBlogData([...blogData])
+   name.current.value = ''
    descr.current.value = ''
-}catch(error){
-  console.log(error + 'nhi ho raha hai')
+   document.getElementById('my_modal_3').close();
+ }catch(error){
+   console.log(error + 'nhi ho raha hai')
+ 
+ }
+    }
 
-}
-  }  
 
+
+
+
+
+
+
+  }
 
 
 
@@ -214,13 +230,13 @@ const deleteBlog = async (item , index) => {
   <div className='mt-10 max-w-[881px] mx-auto border-4 border-fuchsia-500 p-4 sm:p-6 rounded-md shadow-lg bg-white'>
   <form className='flex  flex-col gap-4 justify-center items-center'>
 
-<label id='title' className="form-control w-full max-w-xs">
+<label  className="form-control w-full max-w-xs">
 <div className="label">
  <span className="label-text text-2xl">Blog Title?</span>
 </div>
 <input ref={title}  type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
 </label>
-<textarea id='blog' className="textarea textarea-secondary w-[20rem]" placeholder="What is in Your Mind?" ref={blog}></textarea>
+<textarea className="textarea textarea-secondary w-[20rem]" placeholder="What is in Your Mind?" ref={blog}></textarea>
 
 <button type='submit'onClick={postBlog} className=" btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">{loading ? <span className="loading loading-dots loading-lg"></span> : "Publish Blog!"}</button>
 </form>
@@ -234,7 +250,7 @@ const deleteBlog = async (item , index) => {
 
 
 {blogData.length > 0 ? blogData.map((item, index) => {
-          return <div key={item.docid} className='flex w-[100%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] mt-10 border border-black'>
+          return <div key={item.uid} className='flex w-[100%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] mt-10 border border-black'>
 
             <div className=''>
 
@@ -251,7 +267,7 @@ const deleteBlog = async (item , index) => {
 
 
              <div className=''>
-              <button className=" m-5 px-10 btn btn-success" onClick={()=>document.getElementById('my_modal_3').showModal()}  >Edit</button>
+              <button className=" m-5 px-10 btn btn-success" onClick={()=>editFunc(item , index)}  >Edit</button>
               <button className=" px-10 btn btn-error" onClick={() => {
 
              
@@ -283,39 +299,41 @@ const deleteBlog = async (item , index) => {
         </div>
       </dialog>
 
-
-      <dialog id="my_modal_3" className="modal">
-   <div className="modal-box">
-     <form method="dialog">
-       {/* if there is a button in form, it will close the modal */}
-       <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-     </form>
-     <h3 className="font-bold text-lg mb-5">Update Blog!</h3>
-     
-     <form onSubmit={(event)=>editBlog(item , index, event)}>
-
-     <label id='name' className="form-control w-full max-w-xs">
-     <div className="label">
-    <span className="font-bold">Title</span>
+          
+    <dialog id="my_modal_3" className="modal">
+    <div className="modal-box">
+      
+        {/* if there is a button in form, it will close the modal */}
+      
+      <h3 className="font-bold text-lg mb-5">Update Blog!</h3>
+      
+      <form onSubmit={()=>editBlog(item , index, event)}>
+ 
+      <label className="form-control w-full max-w-xs">
+      <div className="label">
+     <span className="font-bold">Title</span>
+     </div>
+    <input ref={name}  type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+    <div className="label">
     </div>
-   <input ref={name}  type="text" placeholder="Write Your Blog Title" className="input input-bordered w-full max-w-xs" />
+    </label>
+ 
+    <label  className="form-control">
+   <div className="label">
+     <span className="font-bold">Blog</span>
+   </div>
+   <textarea ref={descr}  className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
    <div className="label">
    </div>
-   </label>
+ </label>
+        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+ <button type='submit' className='btn btn-primary w-full mt-3 font-bold'>Update</button>
+ 
+      </form>
+    </div>
+  </dialog>
+   
 
-   <label  className="form-control">
-  <div className="label">
-    <span className="font-bold">Blog</span>
-  </div>
-  <textarea ref={descr} id='descr' className="textarea textarea-bordered h-24" placeholder="What is in your Mind?"></textarea>
-  <div className="label">
-  </div>
-</label>
-<button type='submit'  className='btn btn-primary w-full mt-3 font-bold'>Update</button>
-
-     </form>
-   </div>
- </dialog>
           </div>
 
           
