@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate , Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../config/Firebase/config';
@@ -7,6 +7,7 @@ const Login = () => {
 
   const email = useRef();
   const password = useRef();
+  const [showAlert, setShowAlert] = useState(false);
 
   
 
@@ -22,17 +23,24 @@ const Login = () => {
       // Signed in 
       const user = userCredential.user;
       console.log(user)
+      
       navigate('/')
     })
     .catch((error) => {
       const errorMessage = error.message;
       console.log(errorMessage)
     });
-
+    
     event.preventDefault()
     email.current.value = ''
     password.current.value = ''
-  
+    // Show the alert after successful submission
+    setShowAlert(true);
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5000);
+    
   }
 
 
@@ -87,7 +95,23 @@ const goToRegister = () => {
     <p className='text-center mt-2'>Don't have an Account? <button onClick={goToRegister} className="  btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">Register Now</button></p>
     </div>
     
-    
+    <div className="fixed top-20 right-0 p-5">
+
+{showAlert && <div role="alert" className="alert alert-success">
+<svg
+xmlns="http://www.w3.org/2000/svg"
+className="h-6 w-6 shrink-0 stroke-current"
+fill="none"
+viewBox="0 0 24 24">
+<path
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  strokeWidth="2"
+  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+ </svg>
+<span>LogIn Successfully !</span>
+</div>}
+</div>
     
     </>
     

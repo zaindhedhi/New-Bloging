@@ -12,6 +12,9 @@ const Dashboard = () => {
  const [blogData, setBlogData] = useState([]);
  const [userObj , setUserObj] = useState({})
  const [error , setError] = useState(true)
+ const [editModal , setEditModal ] = useState(false)
+ const [editindex , setIndex] = useState(0)
+ const [Item1 , setItem]= useState(null)
 
  
  const title = useRef()
@@ -177,7 +180,12 @@ const deleteBlog = async (item , index) => {
 
 
     const editFunc = (item , index) =>{
-      document.getElementById('my_modal_3').showModal()
+      // document.getElementById('my_modal_3').showModal()
+
+      setEditModal (true)
+      setIndex (index)
+      setItem (item)
+    }
     
     const editBlog = async(item , index, event) =>{
      
@@ -203,7 +211,8 @@ const deleteBlog = async (item , index) => {
    setBlogData([...blogData])
    name.current.value = ''
    descr.current.value = ''
-   document.getElementById('my_modal_3').close();
+  //  document.getElementById('my_modal_3').close();
+  setEditModal(false)
  }catch(error){
    console.log(error + 'nhi ho raha hai')
  
@@ -217,7 +226,7 @@ const deleteBlog = async (item , index) => {
 
 
 
-  }
+  
 
 
 
@@ -250,7 +259,7 @@ const deleteBlog = async (item , index) => {
 
 
 {blogData.length > 0 ? blogData.map((item, index) => {
-          return <div key={item.uid} className='flex w-[100%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] mt-10 border border-black'>
+          return <div key={item.docid} className='flex w-[100%] px-7 py-5 flex-col bg-[#ffffff] justify-center items-start gap-4 rounded-lg shadow-lg  min-h-[40vh] min-w-[300px] mt-10 border border-black'>
 
             <div className=''>
 
@@ -298,16 +307,18 @@ const deleteBlog = async (item , index) => {
           </div>
         </div>
       </dialog>
+        </div>
+        }): <h1 className='font-bold text-center'>Add Blogs!</h1> }
+</div>
 
-          
-    <dialog id="my_modal_3" className="modal">
+    {editModal ?    <div className="fixed top-0 bottom-0 right-0 left-0 flex items-center justify-center bg-transparent">
     <div className="modal-box">
       
         {/* if there is a button in form, it will close the modal */}
       
       <h3 className="font-bold text-lg mb-5">Update Blog!</h3>
       
-      <form onSubmit={()=>editBlog(item , index, event)}>
+      <form onSubmit={(event)=>editBlog(Item1 , editindex, event)}>
  
       <label className="form-control w-full max-w-xs">
       <div className="label">
@@ -327,21 +338,11 @@ const deleteBlog = async (item , index) => {
    </div>
  </label>
         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
- <button type='submit' className='btn btn-primary w-full mt-3 font-bold'>Update</button>
+ <button type='submit'  className='btn btn-primary w-full mt-3 font-bold'>Update</button>
  
       </form>
     </div>
-  </dialog>
-   
-
-          </div>
-
-          
-        }): <h1 className='font-bold text-center'>Add Blogs!</h1> }
-</div>
-    
-    
-
+  </div> : null}
     
     
     </>
